@@ -21,18 +21,13 @@ jobs:
         with:
           node-version: '16.x'
           
-      - name: Delete cache
-        run: npm cache clean --force
-      
       - name: Cache node modules
         uses: actions/cache@v3
         id: cache
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-
-            ${{ runner.os }}-
+          key: node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: node-modules-
       
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'

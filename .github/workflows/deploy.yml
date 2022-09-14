@@ -1,7 +1,6 @@
 name: deploy
 
 on:
-  # Triggers the workflow on push or pull request events but only for the "develop" branch
   push:
     branches: [ master ]
 
@@ -23,10 +22,10 @@ jobs:
           node-version: '16.x'
       
       - name: Cache node modules
-        uses: actions/cache@v2
         id: cache-node-modules
+        uses: actions/cache@v3
         with:
-          path: ~/.npm
+          path: '**/npm_modules'
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
       
       - name: Install Dependencies
@@ -57,4 +56,4 @@ jobs:
           --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=client/$build.zip
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$build.zip

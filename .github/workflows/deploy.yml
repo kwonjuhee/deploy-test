@@ -49,12 +49,12 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./$bulid.zip s3://$S3_BUCKET_NAME/$bulid.zip
+        run: aws s3 cp --region ap-northeast-2 ./$bulid.zip s3://$S3_BUCKET_NAME/
       
       - name: Deploy with AWS Code Deploy
         run: | 
           aws deploy create-deployment
-          --deployment-config-name CodeDeployDefault.AllAtOnce
           --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }}
+          --deployment-config-name CodeDeployDefault.AllAtOnce
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }}
           --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=client/$build.zip

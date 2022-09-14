@@ -20,6 +20,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
+          
+      - name: Delete cache
+        run: npm cache clean --force
       
       - name: Cache node modules
         uses: actions/cache@v3
@@ -33,7 +36,7 @@ jobs:
       
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
-        run: npm install
+        run: npm ci
         
       - name: Build
         run: npm run build
